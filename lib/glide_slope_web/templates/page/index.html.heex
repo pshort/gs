@@ -1,0 +1,65 @@
+<div x-data="landing" class="flex flex-col items-center">
+  <div class="flex flex-row items-middle justify-center">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mr-2 text-green-500" viewBox="0 0 20 20" fill="currentColor">
+      <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+    </svg>
+    <h1 class="text-6xl text-zinc-600">Glideslope</h1>
+  </div>
+
+  <div class="flex flex-row justify-center text-gray-400 my-8">
+    <a href="#" @click="tab = 'login'" :class="tab === 'login' ? 'bg-green-500 text-white border-zinc-100 border-2' : 'bg-white text-green-500 border-green-500 border-2'" class="mr-2 px-2 py-0 rounded-md">Login</a> 
+    or 
+    <a href="#" @click="tab = 'register'" :class="tab === 'register' ? 'bg-green-500 text-white border-zinc-100 border-2' : 'bg-white text-green-500 border-green-500 border-2'" class="ml-2 px-2 py-0 rounded-md">Create an account</a> 
+  </div>
+  
+  <div x-show="tab === 'login'" class="w-96 p-6 rounded-md bg-zinc-100/75">
+    <h2 class="mb-6 text-md text-zinc-500 text-center">Log in</h2>
+    <.form let={f} for={@conn} action={Routes.user_session_path(@conn, :create)} as={:user} class="flex flex-col">
+      <%= if @error_message do %>
+        <div class="alert alert-danger">
+          <p><%= @error_message %></p>
+        </div>
+      <% end %>
+
+      <%= label f, :email, class: "text-green-500 mb-2" %>
+      <%= email_input f, :email, required: true, class: "mb-4 px-2 border", autocomplete: "off" %>
+
+      <%= label f, :password, class: "text-green-500 mb-2" %>
+      <%= password_input f, :password, required: true, class: "mb-4 px-2 border", autocomplete: "off" %>
+
+      <div class="flex flex-row justify-start items-center mb-2">
+        <%= checkbox f, :remember_me %>
+        <%= label f, :remember_me, "Keep me logged in for 60 days", class: "text-green-500 ml-2" %>
+      </div>
+
+      <div>
+        <%= submit "Log in", class: "bg-green-500 text-white px-4 py-1 rounded-md mt-4 hover:bg-green-400 transition-colors duration-300" %>
+      </div>
+    </.form>
+  </div>
+
+  <div x-show="tab === 'register'" class="w-96 p-6 rounded-md bg-zinc-100/75">
+    <h2 class="mb-6 text-md text-zinc-500 text-center">Create a new account</h2>
+    <.form let={f} for={@changeset} action={Routes.user_registration_path(@conn, :create)} class="flex flex-col">
+      <%= if @changeset.action do %>
+        <div class="alert alert-danger">
+          <p>Oops, something went wrong! Please check the errors below.</p>
+        </div>
+      <% end %>
+
+      <%= label f, :email, class: "text-green-500 mb-2" %>
+      <%= email_input f, :email, required: true, class: "mb-4 px-2 border", autocomplete: "off" %>
+      <%= error_tag f, :email %>
+
+      <%= label f, :password, class: "text-green-500 mb-2" %>
+      <%= password_input f, :password, required: true, class: "mb-4 px-2 border", autocomplete: "off" %>
+      <%= error_tag f, :password %>
+
+      <div>
+        <%= submit "Register", class: "bg-green-500 text-white px-4 py-1 rounded-md mt-4 hover:bg-green-400 transition-colors duration-300" %>
+      </div>
+    </.form>
+  </div>
+
+
+</div>
